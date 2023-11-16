@@ -1,0 +1,11 @@
+variable "addon_coredns_version" {}
+variable "addon_ebs_version" {}
+variable "addon_kube_proxy_version" {}
+variable "addon_vpc_version" {}
+variable "cluster_name" {}
+variable "cluster_version" {}
+variable "env" {}
+variable "log_types" {}
+variable "worker_instance_count" {}
+variable "worker_instance_type" {}
+variable "worker_volume_size" {}

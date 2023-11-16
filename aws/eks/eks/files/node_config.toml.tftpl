@@ -1,0 +1,11 @@
+[settings.kubernetes]
+"cluster-name" = "${cluster_name}"
+"api-server" = "${cluster_endpoint}"
+"cluster-certificate" = "${cluster_ca_data}"
+"cluster-dns-ip" = "172.20.0.10"
+"max-pods" = 110
+[settings.kubernetes.node-labels]
+"eks.amazonaws.com/nodegroup-image" = "${ami_id}"
+"eks.amazonaws.com/capacityType" = "ON_DEMAND"
+"eks.amazonaws.com/nodegroup" = "${nodegroup}"
+"role" = "${nodegroup}"
