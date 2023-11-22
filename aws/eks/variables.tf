@@ -6,6 +6,6 @@ variable "cluster_name" {}
 variable "cluster_version" {}
 variable "env" {}
 variable "log_types" {}
-variable "worker_instance_count" {}
-variable "worker_instance_type" {}
-variable "worker_volume_size" {}
+variable "core_node_count" {}
+variable "core_node_type" {}
+variable "core_node_volume_size" {}

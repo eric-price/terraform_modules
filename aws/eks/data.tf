@@ -25,3 +25,7 @@ data "aws_ami" "bottlerocket_image" {
     values = ["bottlerocket-aws-k8s-${var.cluster_version}-x86_64-*"]
   }
 }
+
+data "tls_certificate" "cluster" {
+  url = aws_eks_cluster.cluster.identity[0].oidc[0].issuer
+}

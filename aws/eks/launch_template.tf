@@ -2,22 +2,17 @@ locals {
   device_list = tolist(data.aws_ami.bottlerocket_image.block_device_mappings)
 }
 
-resource "aws_iam_instance_profile" "nodes" {
-  name = "eks-nodes-${var.cluster_name}"
-  role = aws_iam_role.nodes.name
-}
-
-resource "aws_launch_template" "worker" {
-  name                    = "eks-worker-${var.cluster_name}"
+resource "aws_launch_template" "core" {
+  name                    = "eks-core-${var.cluster_name}"
   disable_api_stop        = false
   disable_api_termination = false
   image_id                = data.aws_ami.bottlerocket_image.id
-  instance_type           = var.worker_instance_type
+  instance_type           = var.core_node_type
   user_data = base64encode(templatefile("../../modules/aws/eks/files/node_config.toml.tftpl", {
     cluster_name     = aws_eks_cluster.cluster.name
     cluster_endpoint = aws_eks_cluster.cluster.endpoint
     cluster_ca_data  = aws_eks_cluster.cluster.certificate_authority[0].data
-    nodegroup        = "worker"
+    nodegroup        = "core"
     ami_id           = data.aws_ami.bottlerocket_image.id
     })
   )
@@ -38,7 +33,7 @@ resource "aws_launch_template" "worker" {
 
     ebs {
       delete_on_termination = true
-      volume_size           = var.worker_volume_size
+      volume_size           = var.core_node_volume_size
       volume_type           = "gp3"
       encrypted             = true
     }
@@ -51,18 +46,14 @@ resource "aws_launch_template" "worker" {
     instance_metadata_tags      = "enabled"
   }
 
-  # network_interfaces {
-  #   security_groups = [aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id]
-  # }
-
   tag_specifications {
     resource_type = "instance"
 
     tags = {
-      Name                 = "eks-worker-${var.cluster_name}"
+      Name                 = "eks-core-${var.cluster_name}"
       terraform            = true
       "eks:cluster-name"   = var.env
-      "eks:nodegroup-name" = "worker"
+      "eks:nodegroup-name" = "core"
       platform             = "eks"
       env                  = var.env
     }
@@ -72,10 +63,10 @@ resource "aws_launch_template" "worker" {
     resource_type = "volume"
 
     tags = {
-      Name                 = "eks-worker-${var.cluster_name}"
+      Name                 = "eks-core-${var.cluster_name}"
       terraform            = true
       "eks:cluster-name"   = var.env
-      "eks:nodegroup-name" = "worker"
+      "eks:nodegroup-name" = "core"
       platform             = "eks"
       env                  = var.env
     }

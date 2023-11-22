@@ -24,6 +24,10 @@ resource "aws_eks_cluster" "cluster" {
     service_ipv4_cidr = "172.20.0.0/16"
   }
 
+  tags = {
+    "karpenter.sh/discovery" = var.cluster_name
+  }
+
   depends_on = [
     aws_iam_role.cluster,
     aws_kms_key.eks,

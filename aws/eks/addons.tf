@@ -20,7 +20,7 @@ resource "aws_eks_addon" "ebs" {
   resolve_conflicts_on_update = "OVERWRITE"
   depends_on                  = [
     aws_eks_cluster.cluster,
-    aws_eks_node_group.workers
+    aws_eks_node_group.core
   ]
 }
 
@@ -32,7 +32,7 @@ resource "aws_eks_addon" "coredns" {
   resolve_conflicts_on_update = "OVERWRITE"
   depends_on                  = [
     aws_eks_cluster.cluster,
-    aws_eks_node_group.workers
+    aws_eks_node_group.core
   ]
 }
 
@@ -44,6 +44,6 @@ resource "aws_eks_addon" "kube-proxy" {
   resolve_conflicts_on_update = "OVERWRITE"
   depends_on                  = [
     aws_eks_cluster.cluster,
-    aws_eks_node_group.workers
+    aws_eks_node_group.core
   ]
 }
