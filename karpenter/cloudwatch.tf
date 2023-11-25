@@ -50,7 +50,7 @@ resource "aws_cloudwatch_event_rule" "karpenter" {
 resource "aws_cloudwatch_event_target" "karpenter" {
   for_each = { for k, v in local.events : k => v }
 
-  rule      = aws_cloudwatch_event_rule.this[each.key].name
+  rule      = aws_cloudwatch_event_rule.karpenter[each.key].name
   target_id = "KarpenterInterruptionQueueTarget"
   arn       = aws_sqs_queue.karpenter.arn
 }
