@@ -49,6 +49,14 @@ resource "aws_security_group" "node" {
     self        = "true"
     to_port     = "0"
   }
+  ingress {
+    description = "full outbound"
+    cidr_blocks = ["10.1.0.0/16"]
+    from_port   = "0"
+    protocol    = "-1"
+    self        = "false"
+    to_port     = "0"
+  }
   tags = {
     Name                     = "eks-node-${var.env}"
     "karpenter.sh/discovery" = var.cluster_name

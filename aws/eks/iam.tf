@@ -48,3 +48,29 @@ resource "aws_iam_openid_connect_provider" "cluster" {
   thumbprint_list = [data.tls_certificate.cluster.certificates[0].sha1_fingerprint]
   url             = data.tls_certificate.cluster.url
 }
+
+resource "aws_iam_role" "fargate" {
+  count = var.fargate ? 1 : 0
+  name  = "eks-fargate-${var.cluster_name}"
+  assume_role_policy = jsonencode({
+    Statement : [
+      {
+        Action : "sts:AssumeRole",
+        Effect : "Allow",
+        Principal : {
+          "Service" : "eks-fargate-pods.amazonaws.com"
+        }
+        Condition : {
+          ArnLike : {
+            "aws:SourceArn" : "arn:aws:eks:${var.region}:${data.aws_caller_identity.current.account_id}:fargateprofile/${var.cluster_name}/*"
+          }
+        },
+      }
+    ],
+    Version : "2012-10-17"
+  })
+
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
+  ]
+}

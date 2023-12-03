@@ -46,6 +46,10 @@ resource "aws_launch_template" "core" {
     instance_metadata_tags      = "enabled"
   }
 
+  # network_interfaces {
+  #   security_groups = [aws_eks_cluster.cluster.vpc_config[0].cluster_security_group_id]
+  # }
+
   tag_specifications {
     resource_type = "instance"
 

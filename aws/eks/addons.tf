@@ -1,7 +1,8 @@
 resource "aws_eks_addon" "vpc" {
+  count                       = var.addons["vpc"]["enable"] ? 1 : 0
   cluster_name                = aws_eks_cluster.cluster.name
   addon_name                  = "vpc-cni"
-  addon_version               = var.addon_vpc_version
+  addon_version               = var.addons["vpc"]["version"]
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   configuration_values = jsonencode({
@@ -13,37 +14,110 @@ resource "aws_eks_addon" "vpc" {
 }
 
 resource "aws_eks_addon" "ebs" {
+  count                       = var.addons["ebs"]["enable"] ? 1 : 0
   cluster_name                = aws_eks_cluster.cluster.name
   addon_name                  = "aws-ebs-csi-driver"
-  addon_version               = var.addon_ebs_version
+  addon_version               = var.addons["ebs"]["version"]
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
-  depends_on                  = [
+  depends_on = [
     aws_eks_cluster.cluster,
     aws_eks_node_group.core
   ]
 }
 
 resource "aws_eks_addon" "coredns" {
+  count                       = var.addons["coredns"]["enable"] ? 1 : 0
   cluster_name                = aws_eks_cluster.cluster.name
   addon_name                  = "coredns"
-  addon_version               = var.addon_coredns_version
+  addon_version               = var.addons["coredns"]["version"]
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
-  depends_on                  = [
+  depends_on = [
     aws_eks_cluster.cluster,
     aws_eks_node_group.core
   ]
 }
 
 resource "aws_eks_addon" "kube-proxy" {
+  count                       = var.addons["kube_proxy"]["enable"] ? 1 : 0
   cluster_name                = aws_eks_cluster.cluster.name
   addon_name                  = "kube-proxy"
-  addon_version               = var.addon_kube_proxy_version
+  addon_version               = var.addons["kube_proxy"]["version"]
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
-  depends_on                  = [
+  depends_on = [
     aws_eks_cluster.cluster,
+    aws_eks_node_group.core
+  ]
+}
+
+resource "helm_release" "metrics_server" {
+  count            = var.addons["metrics_server"]["enable"] ? 1 : 0
+  namespace        = "kube-system"
+  create_namespace = false
+  name             = "metrics-server"
+  repository       = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart            = "metrics-server"
+  version          = var.addons["metrics_server"]["version"]
+  values = [
+    <<-EOT
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: role
+              operator: In
+              values:
+              - core
+    EOT
+  ]
+  depends_on = [
+    aws_eks_cluster.cluster,
+    aws_eks_node_group.core
+  ]
+}
+
+module "lb-controller" {
+  count                  = var.addons["lb_controller"]["enable"] ? 1 : 0
+  source                 = "../../aws/eks-addons/lb-controller"
+  cluster_name           = var.env
+  env                    = var.env
+  irsa_oidc_provider_arn = aws_iam_openid_connect_provider.cluster.arn
+  controller_version     = var.addons["lb_controller"]["version"]
+  depends_on = [
+    aws_eks_node_group.core
+  ]
+}
+
+module "karpenter" {
+  count                  = var.addons["karpenter"]["enable"] ? 1 : 0
+  source                 = "../../aws/eks-addons/karpenter"
+  env                    = var.env
+  region                 = var.region
+  cluster_name           = aws_eks_cluster.cluster.name
+  cluster_endpoint       = aws_eks_cluster.cluster.endpoint
+  irsa_oidc_provider_arn = aws_iam_openid_connect_provider.cluster.arn
+  eks_node_role_arn      = aws_iam_role.nodes.arn
+  karpenter_version      = var.addons["karpenter"]["version"]
+  depends_on = [
+    aws_eks_node_group.core
+  ]
+}
+
+module "secrets_manager" {
+  count  = var.addons["secrets_manager"]["enable"] ? 1 : 0
+  source = "../../aws/eks-addons/secrets_manager"
+  # env                    = var.env
+  # region                 = var.region
+  # cluster_name           = aws_eks_cluster.cluster.name
+  # cluster_endpoint       = aws_eks_cluster.cluster.endpoint
+  # irsa_oidc_provider_arn = aws_iam_openid_connect_provider.cluster.arn
+  # eks_node_role_arn      = aws_iam_role.nodes.arn
+  csi_driver_version       = var.addons["secrets_manager"]["csi_driver_version"]
+  secrets_provider_version = var.addons["secrets_manager"]["secrets_provider_version"]
+  depends_on = [
     aws_eks_node_group.core
   ]
 }

@@ -1,11 +1,10 @@
-variable "addon_coredns_version" {}
-variable "addon_ebs_version" {}
-variable "addon_kube_proxy_version" {}
-variable "addon_vpc_version" {}
+variable "addons" {}
 variable "cluster_name" {}
 variable "cluster_version" {}
-variable "env" {}
-variable "log_types" {}
 variable "core_node_count" {}
 variable "core_node_type" {}
 variable "core_node_volume_size" {}
+variable "env" {}
+variable "fargate" {}
+variable "log_types" {}
+variable "region" {}

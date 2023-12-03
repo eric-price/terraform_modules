@@ -34,3 +34,9 @@ resource "aws_eks_cluster" "cluster" {
     aws_security_group.cluster
   ]
 }
+
+resource "kubernetes_namespace" "env" {
+  metadata {
+    name = var.env
+  }
+}
