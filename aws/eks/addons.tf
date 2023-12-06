@@ -79,9 +79,9 @@ resource "helm_release" "metrics_server" {
   ]
 }
 
-module "lb-controller" {
+module "lb_controller" {
   count                  = var.addons["lb_controller"]["enable"] ? 1 : 0
-  source                 = "../../aws/eks-addons/lb-controller"
+  source                 = "../../aws/eks-addons/lb_controller"
   cluster_name           = var.env
   env                    = var.env
   irsa_oidc_provider_arn = aws_iam_openid_connect_provider.cluster.arn
@@ -106,17 +106,31 @@ module "karpenter" {
   ]
 }
 
-module "secrets_manager" {
-  count  = var.addons["secrets_manager"]["enable"] ? 1 : 0
-  source = "../../aws/eks-addons/secrets_manager"
-  # env                    = var.env
-  # region                 = var.region
-  # cluster_name           = aws_eks_cluster.cluster.name
-  # cluster_endpoint       = aws_eks_cluster.cluster.endpoint
-  # irsa_oidc_provider_arn = aws_iam_openid_connect_provider.cluster.arn
-  # eks_node_role_arn      = aws_iam_role.nodes.arn
-  csi_driver_version       = var.addons["secrets_manager"]["csi_driver_version"]
-  secrets_provider_version = var.addons["secrets_manager"]["secrets_provider_version"]
+resource "helm_release" "external_secrets_operator" {
+  count            = var.addons["external_secrets"]["enable"] ? 1 : 0
+  namespace        = "external-secrets"
+  create_namespace = true
+  name             = "external-secrets"
+  repository       = "https://charts.external-secrets.io"
+  chart            = "external-secrets"
+  version          = var.addons["external_secrets"]["version"]
+  depends_on = [
+    aws_eks_node_group.core
+  ]
+}
+
+resource "helm_release" "reloader" {
+  count            = var.addons["reloader"]["enable"] ? 1 : 0
+  namespace        = var.env
+  create_namespace = false
+  name             = "stakater"
+  repository       = "https://stakater.github.io/stakater-charts"
+  chart            = "reloader"
+  version          = var.addons["reloader"]["version"]
+  set {
+    name  = "reloader.namespaceSelector"
+    value = var.env
+  }
   depends_on = [
     aws_eks_node_group.core
   ]

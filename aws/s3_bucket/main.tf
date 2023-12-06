@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket = "${var.name}-${var.env}-${data.aws_caller_identity.current.account_id}"
+  bucket = var.bucket_name
   tags = {
-    service   = var.name
+    service   = var.service
   }
 }
 

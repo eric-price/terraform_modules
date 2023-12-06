@@ -30,6 +30,6 @@ resource "aws_iam_role" "lb" {
   assume_role_policy = data.aws_iam_policy_document.irsa_assume_role.json
   inline_policy {
     name   = "eks-lb-controller"
-    policy = file("../../modules/aws/eks-addons/lb-controller/files/iam_policy.json")
+    policy = file("../../modules/aws/eks-addons/lb_controller/files/iam_policy.json")
   }
 }

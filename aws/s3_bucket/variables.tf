@@ -1,4 +1,5 @@
-variable "name" {}
+variable "bucket_name" {}
 variable "env" {}
-variable "versioning" {}
 variable "logging" {}
+variable "service" {}
+variable "versioning" {}
