@@ -52,6 +52,9 @@ No modules.
 | <a name="input_irsa_oidc_provider_arn"></a> [irsa\_oidc\_provider\_arn](#input\_irsa\_oidc\_provider\_arn) | n/a | `any` | n/a | yes |
 | <a name="input_karpenter_version"></a> [karpenter\_version](#input\_karpenter\_version) | n/a | `any` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `any` | n/a | yes |
+| <a name="input_worker_node_arch"></a> [worker\_node\_arch](#input\_worker\_node\_arch) | n/a | `any` | n/a | yes |
+| <a name="input_worker_node_capacity_types"></a> [worker\_node\_capacity\_types](#input\_worker\_node\_capacity\_types) | n/a | `any` | n/a | yes |
+| <a name="input_worker_node_types"></a> [worker\_node\_types](#input\_worker\_node\_types) | n/a | `any` | n/a | yes |
 
 ## Outputs
 

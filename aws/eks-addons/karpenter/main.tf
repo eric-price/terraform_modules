@@ -104,46 +104,11 @@ resource "kubectl_manifest" "karpenter_node_class" {
 }
 
 resource "kubectl_manifest" "karpenter_node_pool" {
-  yaml_body = <<-YAML
-    apiVersion: karpenter.sh/v1beta1
-    kind: NodePool
-    metadata:
-      name: default
-    spec:
-      template:
-        spec:
-          requirements:
-            - key: kubernetes.io/arch
-              operator: In
-              values: ["amd64"]
-            - key: kubernetes.io/os
-              operator: In
-              values: ["linux"]
-            - key: karpenter.sh/capacity-type
-              operator: In
-              values: ["spot", "on-demand"]
-            - key: node.kubernetes.io/instance-type
-              operator: In
-              values: ["t3.medium", "t3a.medium"]
-            - key: karpenter.k8s.aws/instance-generation
-              operator: Gt
-              values: ["2"]
-            - key: karpenter.k8s.aws/instance-cpu
-              operator: Lt
-              values: ["9"]
-            - key: karpenter.k8s.aws/instance-hypervisor
-              operator: In
-              values: ["nitro"]
-          nodeClassRef:
-            name: default
-          kubelet:
-            maxPods: 110
-      limits:
-        cpu: 1000
-      disruption:
-        consolidationPolicy: WhenUnderutilized
-        expireAfter: 720h # 30 * 24h = 720h
-  YAML
+  yaml_body = templatefile("../../modules/aws/eks-addons/karpenter/files/node_pool.yaml", {
+    INSTANCE_TYPES = jsonencode(var.worker_node_types)
+    CAPACITY_TYPES = jsonencode(var.worker_node_capacity_types)
+    INSTANCE_ARCH  = jsonencode(var.worker_node_arch)
+  })
 
   depends_on = [
     helm_release.karpenter
