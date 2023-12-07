@@ -8,3 +8,6 @@ variable "env" {}
 variable "fargate" {}
 variable "log_types" {}
 variable "region" {}
+variable "worker_node_types" {}
+variable "worker_node_capacity_types" {}
+variable "worker_node_arch" {}

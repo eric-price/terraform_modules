@@ -45,16 +45,19 @@ variable "addons" {
 }
 
 module "eks-cluster" {
-  source                      = "../../modules/aws/eks"
-  cluster_name                = local.env
-  env                         = local.env
-  region                      = local.region
-  cluster_version             = "1.28"
-  fargate                     = false
-  addons                      = var.addons
-  core_node_type              = "m5a.large"
-  core_node_count             = 2
-  core_node_volume_size       = 100
+  source                     = "../../modules/aws/eks"
+  cluster_name               = local.env
+  env                        = local.env
+  region                     = local.region
+  cluster_version            = "1.28"
+  fargate                    = false
+  addons                     = var.addons
+  core_node_type             = "t3a.medium"
+  core_node_count            = 2
+  core_node_volume_size      = 100
+  worker_node_types          = ["t3.medium", "t3a.medium"]
+  worker_node_capacity_types = ["spot", "on-demand"]
+  worker_node_arch           = ["amd64"]
   log_types = [
     "api",
     "audit",
@@ -63,4 +66,3 @@ module "eks-cluster" {
     "scheduler"
   ]
 }
-```

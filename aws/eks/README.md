@@ -66,6 +66,9 @@
 | <a name="input_fargate"></a> [fargate](#input\_fargate) | n/a | `any` | n/a | yes |
 | <a name="input_log_types"></a> [log\_types](#input\_log\_types) | n/a | `any` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `any` | n/a | yes |
+| <a name="input_worker_node_arch"></a> [worker\_node\_arch](#input\_worker\_node\_arch) | n/a | `any` | n/a | yes |
+| <a name="input_worker_node_capacity_types"></a> [worker\_node\_capacity\_types](#input\_worker\_node\_capacity\_types) | n/a | `any` | n/a | yes |
+| <a name="input_worker_node_types"></a> [worker\_node\_types](#input\_worker\_node\_types) | n/a | `any` | n/a | yes |
 
 ## Outputs
 

@@ -92,15 +92,18 @@ module "lb_controller" {
 }
 
 module "karpenter" {
-  count                  = var.addons["karpenter"]["enable"] ? 1 : 0
-  source                 = "../../aws/eks-addons/karpenter"
-  env                    = var.env
-  region                 = var.region
-  cluster_name           = aws_eks_cluster.cluster.name
-  cluster_endpoint       = aws_eks_cluster.cluster.endpoint
-  irsa_oidc_provider_arn = aws_iam_openid_connect_provider.cluster.arn
-  eks_node_role_arn      = aws_iam_role.nodes.arn
-  karpenter_version      = var.addons["karpenter"]["version"]
+  count                      = var.addons["karpenter"]["enable"] ? 1 : 0
+  source                     = "../../aws/eks-addons/karpenter"
+  env                        = var.env
+  region                     = var.region
+  cluster_name               = aws_eks_cluster.cluster.name
+  cluster_endpoint           = aws_eks_cluster.cluster.endpoint
+  irsa_oidc_provider_arn     = aws_iam_openid_connect_provider.cluster.arn
+  eks_node_role_arn          = aws_iam_role.nodes.arn
+  karpenter_version          = var.addons["karpenter"]["version"]
+  worker_node_types          = var.worker_node_types
+  worker_node_capacity_types = var.worker_node_capacity_types
+  worker_node_arch           = var.worker_node_arch
   depends_on = [
     aws_eks_node_group.core
   ]
