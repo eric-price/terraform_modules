@@ -45,16 +45,16 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cluster_endpoint"></a> [cluster\_endpoint](#input\_cluster\_endpoint) | n/a | `any` | n/a | yes |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `any` | n/a | yes |
-| <a name="input_eks_node_role_arn"></a> [eks\_node\_role\_arn](#input\_eks\_node\_role\_arn) | n/a | `any` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | n/a | `any` | n/a | yes |
-| <a name="input_irsa_oidc_provider_arn"></a> [irsa\_oidc\_provider\_arn](#input\_irsa\_oidc\_provider\_arn) | n/a | `any` | n/a | yes |
-| <a name="input_karpenter_version"></a> [karpenter\_version](#input\_karpenter\_version) | n/a | `any` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | n/a | `any` | n/a | yes |
-| <a name="input_worker_node_arch"></a> [worker\_node\_arch](#input\_worker\_node\_arch) | n/a | `any` | n/a | yes |
-| <a name="input_worker_node_capacity_types"></a> [worker\_node\_capacity\_types](#input\_worker\_node\_capacity\_types) | n/a | `any` | n/a | yes |
-| <a name="input_worker_node_types"></a> [worker\_node\_types](#input\_worker\_node\_types) | n/a | `any` | n/a | yes |
+| <a name="input_cluster_endpoint"></a> [cluster\_endpoint](#input\_cluster\_endpoint) | n/a | `string` | n/a | yes |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | n/a | yes |
+| <a name="input_eks_node_role_arn"></a> [eks\_node\_role\_arn](#input\_eks\_node\_role\_arn) | n/a | `string` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
+| <a name="input_irsa_oidc_provider_arn"></a> [irsa\_oidc\_provider\_arn](#input\_irsa\_oidc\_provider\_arn) | n/a | `string` | n/a | yes |
+| <a name="input_karpenter_version"></a> [karpenter\_version](#input\_karpenter\_version) | n/a | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | n/a | `string` | n/a | yes |
+| <a name="input_worker_node_arch"></a> [worker\_node\_arch](#input\_worker\_node\_arch) | n/a | `list(string)` | n/a | yes |
+| <a name="input_worker_node_capacity_types"></a> [worker\_node\_capacity\_types](#input\_worker\_node\_capacity\_types) | n/a | `list(string)` | n/a | yes |
+| <a name="input_worker_node_types"></a> [worker\_node\_types](#input\_worker\_node\_types) | n/a | `list(string)` | n/a | yes |
 
 ## Outputs
 
