@@ -1,4 +1,15 @@
-variable "cluster_name" {}
-variable "env" {}
-variable "irsa_oidc_provider_arn" {}
-variable "controller_version" {}
+variable "cluster_name" {
+  type = string
+}
+variable "env" {
+  type = string
+}
+variable "irsa_oidc_provider_arn" {
+  type = string
+}
+variable "controller_version" {
+  type = string
+}
+variable "cert" {
+  type = string
+}

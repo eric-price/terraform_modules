@@ -41,3 +41,23 @@ resource "kubernetes_service_account" "service_account" {
     }
   }
 }
+
+resource "kubectl_manifest" "external_app_lb" {
+  yaml_body = templatefile("../../modules/aws/eks-addons/lb_controller/files/app_lb.yaml", {
+    CERT       = var.cert
+    ENV        = var.env
+    LB_NAME    = "${var.env}-app-external"
+    LB_TYPE    = "internet-facing"
+    SSL_POLICY = "ELBSecurityPolicy-FS-1-2-2019-08"
+  })
+}
+
+resource "kubectl_manifest" "internal_app_lb" {
+  yaml_body = templatefile("../../modules/aws/eks-addons/lb_controller/files/app_lb.yaml", {
+    CERT       = var.cert
+    ENV        = var.env
+    LB_NAME    = "${var.env}-app-internal"
+    LB_TYPE    = "internal"
+    SSL_POLICY = "ELBSecurityPolicy-FS-1-2-2019-08"
+  })
+}

@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "irsa_assume_role" {
 }
 
 resource "aws_iam_role" "lb" {
-  name               = "eks-lb-controller-${var.env}"
+  name               = "eks-lb-controller-${var.cluster_name}"
   assume_role_policy = data.aws_iam_policy_document.irsa_assume_role.json
   inline_policy {
     name   = "eks-lb-controller"
