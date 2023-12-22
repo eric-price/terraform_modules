@@ -32,11 +32,11 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | n/a | `any` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | n/a | `any` | n/a | yes |
-| <a name="input_logging"></a> [logging](#input\_logging) | n/a | `any` | n/a | yes |
-| <a name="input_service"></a> [service](#input\_service) | n/a | `any` | n/a | yes |
-| <a name="input_versioning"></a> [versioning](#input\_versioning) | n/a | `any` | n/a | yes |
+| <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | n/a | `string` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
+| <a name="input_logging"></a> [logging](#input\_logging) | n/a | `bool` | n/a | yes |
+| <a name="input_service"></a> [service](#input\_service) | n/a | `string` | n/a | yes |
+| <a name="input_versioning"></a> [versioning](#input\_versioning) | n/a | `bool` | n/a | yes |
 
 ## Outputs
 
