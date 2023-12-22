@@ -50,7 +50,7 @@ resource "aws_security_group" "node" {
     to_port     = "0"
   }
   ingress {
-    description = "full outbound"
+    description = "vpc traffic"
     cidr_blocks = ["10.1.0.0/16"]
     from_port   = "0"
     protocol    = "-1"

@@ -82,10 +82,11 @@ resource "helm_release" "metrics_server" {
 module "lb_controller" {
   count                  = var.addons["lb_controller"]["enable"] ? 1 : 0
   source                 = "../../aws/eks-addons/lb_controller"
-  cluster_name           = var.env
+  cluster_name           = aws_eks_cluster.cluster.name
   env                    = var.env
   irsa_oidc_provider_arn = aws_iam_openid_connect_provider.cluster.arn
   controller_version     = var.addons["lb_controller"]["version"]
+  cert                   = var.loadbalancer_cert
   depends_on = [
     aws_eks_node_group.core
   ]
@@ -134,6 +135,28 @@ resource "helm_release" "reloader" {
     name  = "reloader.namespaceSelector"
     value = var.env
   }
+  depends_on = [
+    aws_eks_node_group.core
+  ]
+}
+
+module "cert_manager" {
+  count                = var.addons["cert_manager"]["enable"] ? 1 : 0
+  source               = "../../aws/eks-addons/cert_manager"
+  env                  = var.env
+  cert_manager_version = var.addons["cert_manager"]["version"]
+  depends_on = [
+    aws_eks_node_group.core
+  ]
+}
+
+module "istio" {
+  count         = var.addons["istio"]["enable"] ? 1 : 0
+  source        = "../../aws/eks-addons/istio"
+  cluster_name  = aws_eks_cluster.cluster.name
+  env           = var.env
+  istio_version = var.addons["istio"]["version"]
+  domains       = var.cert_domains
   depends_on = [
     aws_eks_node_group.core
   ]

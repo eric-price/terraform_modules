@@ -19,6 +19,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_cert_manager"></a> [cert\_manager](#module\_cert\_manager) | ../../aws/eks-addons/cert_manager | n/a |
+| <a name="module_istio"></a> [istio](#module\_istio) | ../../aws/eks-addons/istio | n/a |
 | <a name="module_karpenter"></a> [karpenter](#module\_karpenter) | ../../aws/eks-addons/karpenter | n/a |
 | <a name="module_lb_controller"></a> [lb\_controller](#module\_lb\_controller) | ../../aws/eks-addons/lb_controller | n/a |
 
@@ -57,18 +59,20 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_addons"></a> [addons](#input\_addons) | n/a | `any` | n/a | yes |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `any` | n/a | yes |
-| <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | n/a | `any` | n/a | yes |
-| <a name="input_core_node_count"></a> [core\_node\_count](#input\_core\_node\_count) | n/a | `any` | n/a | yes |
-| <a name="input_core_node_type"></a> [core\_node\_type](#input\_core\_node\_type) | n/a | `any` | n/a | yes |
-| <a name="input_core_node_volume_size"></a> [core\_node\_volume\_size](#input\_core\_node\_volume\_size) | n/a | `any` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | n/a | `any` | n/a | yes |
-| <a name="input_fargate"></a> [fargate](#input\_fargate) | n/a | `any` | n/a | yes |
-| <a name="input_log_types"></a> [log\_types](#input\_log\_types) | n/a | `any` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | n/a | `any` | n/a | yes |
-| <a name="input_worker_node_arch"></a> [worker\_node\_arch](#input\_worker\_node\_arch) | n/a | `any` | n/a | yes |
-| <a name="input_worker_node_capacity_types"></a> [worker\_node\_capacity\_types](#input\_worker\_node\_capacity\_types) | n/a | `any` | n/a | yes |
-| <a name="input_worker_node_types"></a> [worker\_node\_types](#input\_worker\_node\_types) | n/a | `any` | n/a | yes |
+| <a name="input_cert_domains"></a> [cert\_domains](#input\_cert\_domains) | n/a | `list(string)` | n/a | yes |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | n/a | `string` | n/a | yes |
+| <a name="input_cluster_version"></a> [cluster\_version](#input\_cluster\_version) | n/a | `string` | n/a | yes |
+| <a name="input_core_node_count"></a> [core\_node\_count](#input\_core\_node\_count) | n/a | `number` | n/a | yes |
+| <a name="input_core_node_type"></a> [core\_node\_type](#input\_core\_node\_type) | n/a | `string` | n/a | yes |
+| <a name="input_core_node_volume_size"></a> [core\_node\_volume\_size](#input\_core\_node\_volume\_size) | n/a | `number` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
+| <a name="input_fargate"></a> [fargate](#input\_fargate) | n/a | `bool` | n/a | yes |
+| <a name="input_loadbalancer_cert"></a> [loadbalancer\_cert](#input\_loadbalancer\_cert) | n/a | `string` | n/a | yes |
+| <a name="input_log_types"></a> [log\_types](#input\_log\_types) | n/a | `list(string)` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | n/a | `string` | n/a | yes |
+| <a name="input_worker_node_arch"></a> [worker\_node\_arch](#input\_worker\_node\_arch) | n/a | `list(string)` | n/a | yes |
+| <a name="input_worker_node_capacity_types"></a> [worker\_node\_capacity\_types](#input\_worker\_node\_capacity\_types) | n/a | `list(string)` | n/a | yes |
+| <a name="input_worker_node_types"></a> [worker\_node\_types](#input\_worker\_node\_types) | n/a | `list(string)` | n/a | yes |
 
 ## Outputs
 

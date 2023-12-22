@@ -38,5 +38,8 @@ resource "aws_eks_cluster" "cluster" {
 resource "kubernetes_namespace" "env" {
   metadata {
     name = var.env
+    labels = {
+      istio-injection = "enabled"
+    }
   }
 }
