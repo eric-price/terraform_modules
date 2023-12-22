@@ -1,0 +1,50 @@
+redis-ha:
+  enabled: true
+controller:
+  replicas: 1
+server:
+  replicas: 2
+  ingress:
+    enabled: true
+    ingressClassName: alb
+    hosts:
+      - ${FQDN}
+    annotations:
+      alb.ingress.kubernetes.io/backend-protocol: HTTPS
+      alb.ingress.kubernetes.io/group.name: ${LB_NAME}
+      alb.ingress.kubernetes.io/healthcheck-interval-seconds: "30"
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+      alb.ingress.kubernetes.io/load-balancer-attributes: routing.http2.enabled=true
+      alb.ingress.kubernetes.io/load-balancer-name: ${LB_NAME}
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-FS-1-2-2019-08
+      alb.ingress.kubernetes.io/tags: "env=${ENV},terraform=true"
+      alb.ingress.kubernetes.io/target-type: ip
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls:
+      - secretName: argocd-server-tls
+        hosts:
+          - argocd.example.com
+    https: true
+  ingressGrpc:
+    enabled: true
+    isAWSALB: true
+    awsALB:
+      serviceType: ClusterIP
+      backendProtocolVersion: GRPC
+    hosts:
+      - ${FQDN}
+repoServer:
+  replicas: 2
+applicationSet:
+  replicas: 2
+global:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: role
+            operator: In
+            values:
+            - core
