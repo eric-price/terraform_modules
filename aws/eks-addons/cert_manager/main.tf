@@ -28,13 +28,13 @@ data "http" "crd_manifest" {
   url = "https://github.com/cert-manager/cert-manager/releases/download/${var.cert_manager_version}/cert-manager.crds.yaml"
 }
 
-data "kubectl_file_documents" "crds" {
-  content = data.http.crd_manifest.response_body
+locals {
+  crd_manifests = split("---", data.http.crd_manifest.response_body)
 }
 
 resource "kubectl_manifest" "crds" {
-  count     = length(data.kubectl_file_documents.crds.documents)
-  yaml_body = element(data.kubectl_file_documents.crds.documents, count.index)
+  count     = length(local.crd_manifests)
+  yaml_body = element(local.crd_manifests, count.index)
 }
 
 resource "kubernetes_secret" "cloudflare_token" {
